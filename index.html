@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pelayanan Pembelian</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" style="background-color: #9b9b9b;">
+    <h2>Form Pelayanan Penjualan</h2>
+    <form id="purchaseForm">
+        <div class="form-group">
+            <label for="name">Nama:</label>
+            <input type="text" id="name" name="name" required>
+            <div id="nameError" class="error"></div>
+        </div>
+        <div class="form-group">
+            <label for="address">Alamat:</label>
+            <input type="text" id="address" name="address" required>
+            <div id="addressError" class="error"></div>
+        </div>
+        <div class="form-group">
+            <label for="phone">No HP:</label>
+            <input type="text" id="phone" name="phone" required>
+            <div id="phoneError" class="error"></div>
+        </div>
+        <div class="form-group">
+            <label for="item">Jenis Barang:</label>
+            <input type="text" id="item" name="item" required>
+            <div id="itemError" class="error"></div>
+        </div>
+        <div class="form-group">
+            <label for="price">Harga Barang:</label>
+            <input type="number" id="price" name="price" required>
+            <div id="priceError" class="error"></div>
+        </div>
+        <div class="form-group">
+            <label for="jumlah">Jumlah:</label>
+            <input type="text" id="jumlah" name="jumlah" required>
+            <div id="priceError" class="error"></div>
+        </div>
+        <hr>
+        <div class="form-group">
+            <label >Total:</label>
+            <textarea id="total"></textarea>
+        </div>
+        <div class="form-group">    
+            <label >Diskon:</label>
+            <textarea  id="dis" ></textarea>
+        </div>  
+            <div class="form-group">    
+            <label >Total Bayar:</label>
+            <textarea  id="bayar"></textarea>
+        </div>
+    </form>
+    <div class="form-group">
+        <input type="submit" value="Proses" onclick="hasil()">
+    </div>
+</div>
+
+<script>
+    function hasil() {
+        var price=parseInt(document.getElementById("price").value);
+        var jumlah=parseInt(document.getElementById("jumlah").value);
+        var total=price*jumlah;
+        document.getElementById("total").innerHTML=total;
+        var dis=0.1;
+        var dis2=0.2;
+        var bayar;
+        if(total>100000){
+            bayar=total-(total*dis);
+            document.getElementById("bayar").innerHTML=bayar;
+            document.getElementById("dis").innerHTML="10%";
+        }else if(total>200000){
+            bayar=total-(total*dis2);
+            document.getElementById("bayar").innerHTML=bayar;
+            document.getElementById("dis").innerHTML="20%";
+
+        }
+        else{
+            document.getElementById("bayar").innerHTML=total;
+            document.getElementById("dis").innerHTML="0%";
+        }
+        
+    }
+    document.getElementById('purchaseForm').addEventListener('submit', function(event) {
+        let isValid = true;
+
+        document.querySelectorAll('.error').forEach(function(error) {
+            error.textContent = '';
+        });
+
+        const name = document.getElementById('name').value;
+        const address = document.getElementById('address').value;
+        const phone = document.getElementById('phone').value;
+        const item = document.getElementById('item').value;
+        const price = document.getElementById('price').value;
+
+        
+
+        if (name.trim() === '') {
+            document.getElementById('nameError').textContent = 'Nama harus diisi.';
+            isValid = false;
+        }
+
+        if (address.trim() === '') {
+            document.getElementById('addressError').textContent = 'Alamat harus diisi.';
+            isValid = false;
+        }
+
+        if (!/^\d+$/.test(phone)) {
+            document.getElementById('phoneError').textContent = 'No HP harus berupa angka.';
+            isValid = false;
+        }
+
+        if (item.trim() === '') {
+            document.getElementById('itemError').textContent = 'Jenis barang harus diisi.';
+            isValid = false;
+        }
+
+        if (price.trim() === '' || isNaN(price) || price <= 0) {
+            document.getElementById('priceError').textContent = 'Harga barang harus berupa angka positif.';
+            isValid = false;
+        }
+
+        if (!isValid) {
+            event.preventDefault(); 
+        }
+    });
+</script>
+
+</body>
+</html>
